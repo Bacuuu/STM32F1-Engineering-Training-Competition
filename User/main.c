@@ -1,4 +1,5 @@
 #include "stm32f10x.h"   
+#include "oled.h"
 
 #define 	Dir 	GPIO_Pin_6
 #define 	Step 	GPIO_Pin_7
@@ -7,14 +8,26 @@ void GPIOInit(void);
 void stepControl(u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR);
 void delay_ms(u32 i);
 void delay_us(u32 i);
-u8 trackL();
-u8 trackL();
+u8 trackL(void);
+u8 trackR(void);
 	
 int main(void)
 {
 	
 	GPIOInit();
+	//OLED_Init();
+	while(1)
+	{
+		stepControl(135,135,1,1);
+		while(1){
+			if(trackL())
+			{
+				stepControl(0,0,1,1);
+				break;
+			}
+		}
 
+}
 }
 
 void GPIOInit(void)
@@ -56,7 +69,7 @@ void GPIOInit(void)
 	*检测到返回1，反之为0
 	*暂时只需要两个
 */
-u8 trackL()
+u8 trackL(void)
 {
 	if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_7) == 1)
 		return 1;
@@ -64,7 +77,7 @@ u8 trackL()
 		return 0;
 }
 
-u8 trackR()
+u8 trackR(void)
 {
 	if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_8) == 1)
 		return 1;
@@ -90,7 +103,7 @@ void stepControl(u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
 	if(ForR == 0)
 		GPIO_SetBits(GPIOA,GPIO_Pin_12);
 	else
-		GPIO_SetBits(GPIOA,GPIO_Pin_12);
+		GPIO_ResetBits(GPIOA,GPIO_Pin_12);
 	
 
 	//1000次为一个定时周期
