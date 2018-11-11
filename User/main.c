@@ -5,29 +5,72 @@
 #define 	Step 	GPIO_Pin_7
 
 void GPIOInit(void);
-void stepControl(u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR);
+void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR);
 void delay_ms(u32 i);
 void delay_us(u32 i);
 u8 trackL(void);
 u8 trackR(void);
+void selfCorrect();
 	
 int main(void)
 {
 	
 	GPIOInit();
-	//OLED_Init();
+	OLED_Init();
+	OLED_ShowChinese(0,0,ren);
+	OLED_ShowChinese(18,0,wu);
+	OLED_ShowChinese(36,0,xian);
+	OLED_ShowChinese(54,0,shi);
+	OLED_ShowChar(72,0,ASCII_Colon);
 	while(1)
 	{
-		stepControl(135,135,1,1);
+		stepControl(450,225,225,1,1);
+		delay_ms(1000);
 		while(1){
-			if(trackL())
+			if(trackL()||trackR())
 			{
-				stepControl(0,0,1,1);
+				stepControl(450,0,0,1,1);
 				break;
 			}
 		}
+		delay_ms(1000);
+		
+		
+	
 
+
+	}
 }
+
+/*
+	*自我
+*/
+void selfCorrect()
+{
+	if(trackL()==1&&trackR()==0)
+	{
+		stepControl(2250,0,1125,1,1);
+		while(1)
+		{
+			if(trackR()==1)
+			{
+				stepControl(450,0,0,1,1);
+				break;
+			}
+		}
+	}
+	if(trackL()==0&&trackR()==1)
+	{
+		stepControl(2250,1125,0,1,1);
+		while(1)
+		{				
+			if(trackL()==1)
+			{
+				stepControl(450,0,0,1,1);
+				break;
+			}
+		}
+	}
 }
 
 void GPIOInit(void)
@@ -71,7 +114,7 @@ void GPIOInit(void)
 */
 u8 trackL(void)
 {
-	if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_7) == 1)
+	if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_7) == 0)
 		return 1;
 	else
 		return 0;
@@ -79,7 +122,7 @@ u8 trackL(void)
 
 u8 trackR(void)
 {
-	if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_8) == 1)
+	if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9) == 0)
 		return 1;
 	else
 		return 0;
@@ -90,7 +133,7 @@ u8 trackR(void)
 	*步进电机控制
 	*PWM调控1	PWM调控2	direction1	direction2
 */
-void stepControl(u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
+void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
 {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef TIM_OCInitStructure;
@@ -107,7 +150,7 @@ void stepControl(u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
 	
 
 	//1000次为一个定时周期
-	TIM_TimeBaseStructure.TIM_Period = 270;//9999
+	TIM_TimeBaseStructure.TIM_Period = period;//9999
 	//设置预分频值，此处不分频
 	TIM_TimeBaseStructure.TIM_Prescaler = 800;//7200
 	//时钟分频系数
