@@ -6,46 +6,81 @@
 
 void GPIOInit(void);
 void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR);
-void delay_ms(u32 i);
-void delay_us(u32 i);
+void delay_ms(u16 time);
+void delay_us(u16 time);
 u8 trackL(void);
 u8 trackR(void);
-void selfCorrect();
-	
+void selfCorrect(void);
+void turnRightDoubleline(void);	
+void black2Stop(void);
+
 int main(void)
 {
 	
 	GPIOInit();
+	
 	OLED_Init();
+
 	OLED_ShowChinese(0,0,ren);
 	OLED_ShowChinese(18,0,wu);
 	OLED_ShowChinese(36,0,xian);
 	OLED_ShowChinese(54,0,shi);
 	OLED_ShowChar(72,0,ASCII_Colon);
-	while(1)
-	{
-		stepControl(450,225,225,1,1);
-		delay_ms(1000);
-		while(1){
-			if(trackL()||trackR())
-			{
-				stepControl(450,0,0,1,1);
-				break;
-			}
-		}
-		delay_ms(1000);
-		
-		
+	
+	stepControl(900,0,0,1,1);
+	
+	stepControl(900,450,450,1,1);
+	delay_ms(4000);
+
+	black2Stop();
+	delay_ms(300);
+	selfCorrect();
+	delay_ms(300);
+	turnRightDoubleline();
+	delay_ms(300);
+	stepControl(900,450,450,1,1);
+	black2Stop();
+	
+	delay_ms(1000);
+	selfCorrect();
+	delay_ms(1000);
+	
+	stepControl(900,450,450,1,1);
+	delay_ms(7000);
+
+	black2Stop();
+	selfCorrect();
 	
 
+	
+}
 
+void black2Stop(void)
+{
+	while(1){
+	if(trackL()||trackR()){
+		stepControl(450,0,0,1,1);
+		break;
 	}
+}
 }
 
 /*
-	*自我
+	*双线右转
 */
-void selfCorrect()
+void turnRightDoubleline(void){
+	stepControl(900,450,450,1,1);
+	delay_ms(200);
+	stepControl(900,450,450,1,0);
+	delay_ms(1650);
+	stepControl(900,0,0,1,1);
+	delay_ms(300);
+}
+
+/*
+	*自我修正
+*/
+void selfCorrect(void)
 {
 	if(trackL()==1&&trackR()==0)
 	{
@@ -138,12 +173,12 @@ void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef TIM_OCInitStructure;
 	
-	if(ForL == 1)
+	if(ForL == 0)
 		GPIO_SetBits(GPIOA,GPIO_Pin_11);
 	else
 		GPIO_ResetBits(GPIOA,GPIO_Pin_11);
 	
-	if(ForR == 0)
+	if(ForR == 1)
 		GPIO_SetBits(GPIOA,GPIO_Pin_12);
 	else
 		GPIO_ResetBits(GPIOA,GPIO_Pin_12);
@@ -187,6 +222,29 @@ void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
 /**
 	*延时函数
 **/
+
+//毫秒级的延时
+void delay_ms(u16 time)
+{    
+   u16 i=0;  
+   while(time--)
+   {
+      i=8000;  //自己定义
+      while(i--) ;    
+   }
+}
+void delay_us(u16 time)
+{    
+   u16 i=0;  
+   while(time--)
+   {
+      i=10;  //自己定义
+      while(i--) ;    
+   }
+}
+
+
+/*
 void delay_ms(u32 i)
 {
     u32 temp;
@@ -216,4 +274,4 @@ void delay_us(u32 i)
     SysTick->CTRL=0;    //关闭计数器
     SysTick->VAL=0;        //清空计数器
 }
-
+*/

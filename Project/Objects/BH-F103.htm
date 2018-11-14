@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\BH-F103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\BH-F103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Sun Nov 11 13:44:08 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Wed Nov 14 23:05:20 2018
 <BR><P>
-<H3>Maximum Stack Usage =         80 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =         88 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; stepControl &rArr; TIM_OC2Init
+main &rArr; turnRightDoubleline &rArr; stepControl &rArr; TIM_OC2Init
 <P>
 <H3>
 Mutually Recursive functions
@@ -98,7 +98,7 @@ Global Symbols
 <P><STRONG><a name="[48]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(.text)
 </UL>
-<P><STRONG><a name="[68]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[6b]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[49]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -108,15 +108,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[69]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[6c]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[6a]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[6d]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[6b]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[6e]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[6c]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[6f]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[6d]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[70]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, startup_stm32f10x_hd.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
@@ -311,7 +311,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[6e]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[71]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[4]"></a>BusFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_it.o(i.BusFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
@@ -336,19 +336,19 @@ Global Symbols
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOInit
 </UL>
 
-<P><STRONG><a name="[67]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_ReadInputDataBit))
-<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackL
+<P><STRONG><a name="[6a]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_ReadInputDataBit))
+<BR><BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackL
 </UL>
 
 <P><STRONG><a name="[57]"></a>GPIO_ResetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_ResetBits))
-<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Write
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
 <P><STRONG><a name="[54]"></a>GPIO_SetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_SetBits))
-<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Write
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_GPIO_Init
@@ -461,62 +461,74 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(.text)
 </UL>
-<P><STRONG><a name="[65]"></a>TIM_ARRPreloadConfig</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_ARRPreloadConfig))
-<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<P><STRONG><a name="[68]"></a>TIM_ARRPreloadConfig</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_ARRPreloadConfig))
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 </UL>
 
-<P><STRONG><a name="[66]"></a>TIM_Cmd</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_Cmd))
-<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<P><STRONG><a name="[69]"></a>TIM_Cmd</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_Cmd))
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 </UL>
 
-<P><STRONG><a name="[61]"></a>TIM_OC1Init</STRONG> (Thumb, 132 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC1Init))
+<P><STRONG><a name="[64]"></a>TIM_OC1Init</STRONG> (Thumb, 132 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC1Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC1Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 </UL>
 
-<P><STRONG><a name="[62]"></a>TIM_OC1PreloadConfig</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC1PreloadConfig))
-<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<P><STRONG><a name="[65]"></a>TIM_OC1PreloadConfig</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC1PreloadConfig))
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 </UL>
 
-<P><STRONG><a name="[63]"></a>TIM_OC2Init</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC2Init))
+<P><STRONG><a name="[66]"></a>TIM_OC2Init</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC2Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC2Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 </UL>
 
-<P><STRONG><a name="[64]"></a>TIM_OC2PreloadConfig</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC2PreloadConfig))
-<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<P><STRONG><a name="[67]"></a>TIM_OC2PreloadConfig</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC2PreloadConfig))
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 </UL>
 
-<P><STRONG><a name="[60]"></a>TIM_TimeBaseInit</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_TimeBaseInit))
-<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<P><STRONG><a name="[63]"></a>TIM_TimeBaseInit</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_TimeBaseInit))
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
 </UL>
 
 <P><STRONG><a name="[5]"></a>UsageFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_it.o(i.UsageFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
-<P><STRONG><a name="[6f]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[72]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[70]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[73]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[71]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[74]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[5d]"></a>delay_ms</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, main.o(i.delay_ms))
-<BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<P><STRONG><a name="[5c]"></a>black2Stop</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, main.o(i.black2Stop))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = black2Stop &rArr; stepControl &rArr; TIM_OC2Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackL
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+</UL>
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[60]"></a>delay_ms</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, main.o(i.delay_ms))
+<BR><BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[56]"></a>delayms</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, main.o(i.delayms))
 <BR><BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 268 bytes, Stack size 8 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = main &rArr; stepControl &rArr; TIM_OC2Init
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 220 bytes, Stack size 8 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = main &rArr; turnRightDoubleline &rArr; stepControl &rArr; TIM_OC2Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackL
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
-<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrect
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
@@ -524,34 +536,58 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[5c]"></a>stepControl</STRONG> (Thumb, 180 bytes, Stack size 56 bytes, main.o(i.stepControl))
+<P><STRONG><a name="[61]"></a>selfCorrect</STRONG> (Thumb, 130 bytes, Stack size 8 bytes, main.o(i.selfCorrect))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = selfCorrect &rArr; stepControl &rArr; TIM_OC2Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackL
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+</UL>
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[5f]"></a>stepControl</STRONG> (Thumb, 180 bytes, Stack size 56 bytes, main.o(i.stepControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = stepControl &rArr; TIM_OC2Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TimeBaseInit
-<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2PreloadConfig
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2Init
-<LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1PreloadConfig
-<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1Init
-<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
-<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ARRPreloadConfig
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TimeBaseInit
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2PreloadConfig
+<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2Init
+<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1PreloadConfig
+<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1Init
+<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
+<LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ARRPreloadConfig
 </UL>
-<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrect
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
 </UL>
 
-<P><STRONG><a name="[5e]"></a>trackL</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, main.o(i.trackL))
+<P><STRONG><a name="[5d]"></a>trackL</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, main.o(i.trackL))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = trackL
 </UL>
-<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrect
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
 </UL>
 
-<P><STRONG><a name="[5f]"></a>trackR</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, main.o(i.trackR))
+<P><STRONG><a name="[5e]"></a>trackR</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, main.o(i.trackR))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = trackR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+</UL>
+<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrect
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
+</UL>
+
+<P><STRONG><a name="[62]"></a>turnRightDoubleline</STRONG> (Thumb, 80 bytes, Stack size 8 bytes, main.o(i.turnRightDoubleline))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = turnRightDoubleline &rArr; stepControl &rArr; TIM_OC2Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
