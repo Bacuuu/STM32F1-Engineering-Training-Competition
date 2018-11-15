@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User</IncludePath>
+              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\User\usart</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -563,6 +563,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\stm32f10x_it.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\usart\bsp_usart.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -574,6 +579,9 @@
               <FilePath>..\Doc\readme.txt</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>New Group</GroupName>
         </Group>
       </Groups>
     </Target>

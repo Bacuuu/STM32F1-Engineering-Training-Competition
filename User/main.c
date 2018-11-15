@@ -1,8 +1,118 @@
 #include "stm32f10x.h"   
 #include "oled.h"
+#include "bsp_usart.h"
 
 #define 	Dir 	GPIO_Pin_6
 #define 	Step 	GPIO_Pin_7
+
+int rx_buf[1024];
+
+// 串口中断服务函数
+void DEBUG_USART_IRQHandler(void)
+{	
+	uint16_t num = 0;
+	if(USART_GetITStatus(DEBUG_USARTx,USART_IT_RXNE)!=RESET)
+	{	
+		
+		//接受消息，并做出相应显示
+		if(USART_ReceiveData(DEBUG_USARTx))
+		{
+			OLED_Clear();
+			rx_buf[num] = USART_ReceiveData(DEBUG_USARTx);
+			
+			if(rx_buf[num]==0x30)
+			{
+			OLED_ShowChinese(0, 0, ren);//‘任’    
+			OLED_ShowChinese(18, 0, wu);//‘务’
+			OLED_ShowChinese(36, 0, xian);//‘显’
+			OLED_ShowChinese(54, 0, shi);//‘示’
+			OLED_ShowChar(72,0,ASCII_Colon);
+			OLED_ShowChinese(0,2,hong);
+			OLED_ShowChinese(18,2,lv);
+			OLED_ShowChinese(36,2,lan);
+			
+			}
+			
+			else if(rx_buf[num]==0x31)
+			{
+			OLED_ShowChinese(0, 0, ren);//‘任’    
+			OLED_ShowChinese(18, 0, wu);//‘务’
+			OLED_ShowChinese(36, 0, xian);//‘显’
+			OLED_ShowChinese(54, 0, shi);//‘示’
+			OLED_ShowChar(72,0,ASCII_Colon);
+			OLED_ShowChinese(0,2,hong);
+			OLED_ShowChinese(18,2,lan);
+			OLED_ShowChinese(36,2,lv);
+			
+			}
+			else if(rx_buf[num]==0x32)
+			{
+			OLED_ShowChinese(0, 0, ren);//‘任’    
+			OLED_ShowChinese(18, 0, wu);//‘务’
+			OLED_ShowChinese(36, 0, xian);//‘显’
+			OLED_ShowChinese(54, 0, shi);//‘示’
+			OLED_ShowChar(72,0,ASCII_Colon);
+			OLED_ShowChinese(0,2,lan);
+			OLED_ShowChinese(18,2,hong);
+			OLED_ShowChinese(36,2,lv);
+			
+			}
+			else if(rx_buf[num]==0x33)
+			{
+			OLED_ShowChinese(0, 0, ren);//‘任’    
+			OLED_ShowChinese(18, 0, wu);//‘务’
+			OLED_ShowChinese(36, 0, xian);//‘显’
+			OLED_ShowChinese(54, 0, shi);//‘示’
+			OLED_ShowChar(72,0,ASCII_Colon);
+			OLED_ShowChinese(0,2,lan);
+			OLED_ShowChinese(18,2,lv);
+			OLED_ShowChinese(36,2,hong);
+			
+			}
+			else if(rx_buf[num]==0x34)
+			{
+			OLED_ShowChinese(0, 0, ren);//‘任’    
+			OLED_ShowChinese(18, 0, wu);//‘务’
+			OLED_ShowChinese(36, 0, xian);//‘显’
+			OLED_ShowChinese(54, 0, shi);//‘示’
+			OLED_ShowChar(72,0,ASCII_Colon);
+			OLED_ShowChinese(0,2,lv);
+			OLED_ShowChinese(18,2,hong);
+			OLED_ShowChinese(36,2,lan);
+			
+			}
+			else if(rx_buf[num]==0x35)
+			{
+			OLED_ShowChinese(0, 0, ren);//‘任’    
+			OLED_ShowChinese(18, 0, wu);//‘务’
+			OLED_ShowChinese(36, 0, xian);//‘显’
+			OLED_ShowChinese(54, 0, shi);//‘示’
+			OLED_ShowChar(72,0,ASCII_Colon);
+			OLED_ShowChinese(0,2,lv);
+			OLED_ShowChinese(18,2,lan);
+			OLED_ShowChinese(36,2,hong);
+			}
+			
+			else
+			{
+							OLED_ShowChinese(0, 0, ren);//‘任’    
+			OLED_ShowChinese(18, 0, wu);//‘务’
+			OLED_ShowChinese(36, 0, ren);//‘显’
+			OLED_ShowChinese(54, 0, wu);//‘示’
+			}
+				
+			
+			
+		}
+		
+		
+		// 当值不等时候，则继续接收下一个
+		else
+		{
+				num ++;
+		  }  
+	}	 
+}
 
 void GPIOInit(void);
 void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR);
@@ -16,11 +126,9 @@ void black2Stop(void);
 
 int main(void)
 {
-	
+	USART_Config();	
 	GPIOInit();
-	
 	OLED_Init();
-
 	OLED_ShowChinese(0,0,ren);
 	OLED_ShowChinese(18,0,wu);
 	OLED_ShowChinese(36,0,xian);
@@ -46,10 +154,12 @@ int main(void)
 	delay_ms(1000);
 	
 	stepControl(900,450,450,1,1);
-	delay_ms(7000);
+	delay_ms(9000);
 
 	black2Stop();
 	selfCorrect();
+	
+	Usart_SendString(DEBUG_USARTx,"Sa");
 	
 
 	
@@ -70,9 +180,9 @@ void black2Stop(void)
 */
 void turnRightDoubleline(void){
 	stepControl(900,450,450,1,1);
-	delay_ms(200);
+	delay_ms(250);
 	stepControl(900,450,450,1,0);
-	delay_ms(1650);
+	delay_ms(2050);
 	stepControl(900,0,0,1,1);
 	delay_ms(300);
 }
