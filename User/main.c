@@ -182,7 +182,7 @@ void turnRightDoubleline(void){
 	stepControl(900,450,450,1,1);
 	delay_ms(250);
 	stepControl(900,450,450,1,0);
-	delay_ms(2050);
+	delay_ms(2100);
 	stepControl(900,0,0,1,1);
 	delay_ms(300);
 }
@@ -194,7 +194,7 @@ void selfCorrect(void)
 {
 	if(trackL()==1&&trackR()==0)
 	{
-		stepControl(2250,0,1125,1,1);
+		stepControl(2250,1125,0,1,1);
 		while(1)
 		{
 			if(trackR()==1)
@@ -206,7 +206,7 @@ void selfCorrect(void)
 	}
 	if(trackL()==0&&trackR()==1)
 	{
-		stepControl(2250,1125,0,1,1);
+		stepControl(2250,0,1125,1,1);
 		while(1)
 		{				
 			if(trackL()==1)
@@ -283,12 +283,20 @@ void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef TIM_OCInitStructure;
 	
-	if(ForL == 0)
-		GPIO_SetBits(GPIOA,GPIO_Pin_11);
-	else
-		GPIO_ResetBits(GPIOA,GPIO_Pin_11);
 	
-	if(ForR == 1)
+	/*
+		*	ForL	ForR	GPIOA11		GPIOA12		direction1		direction2
+		*	1		1		0			0			1				1
+		*	1		0		0			1			0				1
+	
+		*	1		0		0			1			1				0
+	*/
+	if(ForR == 1)					
+		GPIO_ResetBits(GPIOA,GPIO_Pin_11);
+	else
+		GPIO_SetBits(GPIOA,GPIO_Pin_11);
+	
+	if(ForL == 0)
 		GPIO_SetBits(GPIOA,GPIO_Pin_12);
 	else
 		GPIO_ResetBits(GPIOA,GPIO_Pin_12);

@@ -128,8 +128,8 @@ Section Cross References
     main.o(i.selfCorrect) refers to main.o(i.trackL) for trackL
     main.o(i.selfCorrect) refers to main.o(i.trackR) for trackR
     main.o(i.selfCorrect) refers to main.o(i.stepControl) for stepControl
-    main.o(i.stepControl) refers to stm32f10x_gpio.o(i.GPIO_SetBits) for GPIO_SetBits
     main.o(i.stepControl) refers to stm32f10x_gpio.o(i.GPIO_ResetBits) for GPIO_ResetBits
+    main.o(i.stepControl) refers to stm32f10x_gpio.o(i.GPIO_SetBits) for GPIO_SetBits
     main.o(i.stepControl) refers to stm32f10x_tim.o(i.TIM_TimeBaseInit) for TIM_TimeBaseInit
     main.o(i.stepControl) refers to stm32f10x_tim.o(i.TIM_OC1Init) for TIM_OC1Init
     main.o(i.stepControl) refers to stm32f10x_tim.o(i.TIM_OC1PreloadConfig) for TIM_OC1PreloadConfig
@@ -1054,7 +1054,7 @@ Image component sizes
 
        254          8          0          0          0       2587   bsp_usart.o
          0          0          0          0          0       4496   core_cm3.o
-      2352        116        240          0       4096      11631   main.o
+      2352        116        240          0       4096      11635   main.o
        132         22          0          0          0       1683   misc.o
         36          8        304          0       1024        856   startup_stm32f10x_hd.o
        304          0          0          0          0       3876   stm32f10x_gpio.o
@@ -1065,7 +1065,7 @@ Image component sizes
        328         28          0          0          0     250581   system_stm32f10x.o
 
     ----------------------------------------------------------------------
-      4738        292        576         20       5124     296017   Object Totals
+      4738        292        576         20       5124     296021   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         16          0          0          0          4          0   (incl. Padding)
 
@@ -1104,8 +1104,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      4824        308        576         20       5124     293481   Grand Totals
-      4824        308        576         20       5124     293481   ELF Image Totals
+      4824        308        576         20       5124     293485   Grand Totals
+      4824        308        576         20       5124     293485   ELF Image Totals
       4824        308        576         20          0          0   ROM Totals
 
 ==============================================================================
