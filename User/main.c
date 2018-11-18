@@ -6,7 +6,8 @@
 #define 	Step 	GPIO_Pin_7
 
 int rx_buf[1024];
-
+unsigned int colorList ;
+unsigned int qrcode;
 // 串口中断服务函数
 void DEBUG_USART_IRQHandler(void)
 {	
@@ -17,9 +18,11 @@ void DEBUG_USART_IRQHandler(void)
 		//接受消息，并做出相应显示
 		if(USART_ReceiveData(DEBUG_USARTx))
 		{
-			OLED_Clear();
+			//OLED_Clear();
 			rx_buf[num] = USART_ReceiveData(DEBUG_USARTx);
-			
+			/*
+				*颜色识别接收
+			*/
 			if(rx_buf[num]==0x30)
 			{
 			OLED_ShowChinese(0, 0, ren);//‘任’    
@@ -30,6 +33,7 @@ void DEBUG_USART_IRQHandler(void)
 			OLED_ShowChinese(0,2,hong);
 			OLED_ShowChinese(18,2,lv);
 			OLED_ShowChinese(36,2,lan);
+			colorList = 123; 
 			
 			}
 			
@@ -43,7 +47,7 @@ void DEBUG_USART_IRQHandler(void)
 			OLED_ShowChinese(0,2,hong);
 			OLED_ShowChinese(18,2,lan);
 			OLED_ShowChinese(36,2,lv);
-			
+			colorList = 132;
 			}
 			else if(rx_buf[num]==0x32)
 			{
@@ -55,7 +59,7 @@ void DEBUG_USART_IRQHandler(void)
 			OLED_ShowChinese(0,2,lan);
 			OLED_ShowChinese(18,2,hong);
 			OLED_ShowChinese(36,2,lv);
-			
+			colorList = 312;
 			}
 			else if(rx_buf[num]==0x33)
 			{
@@ -67,7 +71,7 @@ void DEBUG_USART_IRQHandler(void)
 			OLED_ShowChinese(0,2,lan);
 			OLED_ShowChinese(18,2,lv);
 			OLED_ShowChinese(36,2,hong);
-			
+			colorList = 321;
 			}
 			else if(rx_buf[num]==0x34)
 			{
@@ -79,7 +83,7 @@ void DEBUG_USART_IRQHandler(void)
 			OLED_ShowChinese(0,2,lv);
 			OLED_ShowChinese(18,2,hong);
 			OLED_ShowChinese(36,2,lan);
-			
+			colorList = 213;
 			}
 			else if(rx_buf[num]==0x35)
 			{
@@ -93,15 +97,53 @@ void DEBUG_USART_IRQHandler(void)
 			OLED_ShowChinese(36,2,hong);
 			}
 			
-			else
-			{
-							OLED_ShowChinese(0, 0, ren);//‘任’    
-			OLED_ShowChinese(18, 0, wu);//‘务’
-			OLED_ShowChinese(36, 0, ren);//‘显’
-			OLED_ShowChinese(54, 0, wu);//‘示’
-			}
 				
+			/*
+				*二维码接收
+			*/
+			else if(rx_buf[num]==0x41)
+			{
+			OLED_ShowChar(0,6,_1);
+			OLED_ShowChar(18,6,_2);
+			OLED_ShowChar(36,6,_3);
 			
+			}
+			
+			else if(rx_buf[num]==0x42)
+			{
+			OLED_ShowChar(0,6,_1);
+			OLED_ShowChar(18,6,_3);
+			OLED_ShowChar(36,6,_2);
+			
+			}
+			else if(rx_buf[num]==0x43)
+			{
+			OLED_ShowChar(0,6,_2);
+			OLED_ShowChar(18,6,_1);
+			OLED_ShowChar(36,6,_3);
+			
+			}
+			else if(rx_buf[num]==0x44)
+			{
+			OLED_ShowChar(0,6,_2);
+			OLED_ShowChar(18,6,_3);
+			OLED_ShowChar(36,6,_1);
+			
+			}
+			else if(rx_buf[num]==0x45)
+			{
+			OLED_ShowChar(0,6,_3);
+			OLED_ShowChar(18,6,_1);
+			OLED_ShowChar(36,6,_2);
+			
+			}
+			else if(rx_buf[num]==0x46)
+			{
+			OLED_ShowChar(0,6,_3);
+			OLED_ShowChar(18,6,_2);
+			OLED_ShowChar(36,6,_1);
+			
+			}
 			
 		}
 		
@@ -120,9 +162,11 @@ void delay_ms(u16 time);
 void delay_us(u16 time);
 u8 trackL(void);
 u8 trackR(void);
-void selfCorrect(void);
+void selfCorrectForward(void);
+void selfCorrectBack(void);
 void turnRightDoubleline(void);	
 void black2Stop(void);
+void turnRightSimpleline(void);
 
 int main(void)
 {
@@ -134,6 +178,11 @@ int main(void)
 	OLED_ShowChinese(36,0,xian);
 	OLED_ShowChinese(54,0,shi);
 	OLED_ShowChar(72,0,ASCII_Colon);
+	OLED_ShowChinese(0,4,er);
+	OLED_ShowChinese(18,4,wei);
+	OLED_ShowChinese(36,4,ma);
+	OLED_ShowChar(54,4,ASCII_Colon);
+	
 	
 	stepControl(900,0,0,1,1);
 	
@@ -142,29 +191,56 @@ int main(void)
 
 	black2Stop();
 	delay_ms(300);
-	selfCorrect();
-	delay_ms(300);
+	selfCorrectForward();
+	delay_ms(100);
 	turnRightDoubleline();
-	delay_ms(300);
+	delay_ms(100);
 	stepControl(900,450,450,1,1);
 	black2Stop();
 	
-	delay_ms(1000);
-	selfCorrect();
-	delay_ms(1000);
+	delay_ms(100);
+	selfCorrectForward();
+	delay_ms(100);
 	
 	stepControl(900,450,450,1,1);
-	delay_ms(9000);
+	delay_ms(8000);
 
 	black2Stop();
-	selfCorrect();
+	selfCorrectForward();
 	
 	Usart_SendString(DEBUG_USARTx,"Sa");
+	delay_ms(2000);
 	
-
+	stepControl(900,450,450,1,1);
+	delay_ms(4000);
+	black2Stop();
+	delay_ms(1000);
+	/*
+		*此处之上代码由起始到二维码检验完成
+		*之下开始逻辑判断并抓取
+	*/
 	
+	stepControl(900,450,450,0,0);
+	delay_ms(5000);
+	black2Stop();
+	delay_ms(300);
+	selfCorrectBack();
+	delay_ms(100);
+	turnRightSimpleline();
+	
+	stepControl(900,450,450,1,1);
+	delay_ms(1000);
+	black2Stop();
+	selfCorrectForward();
+	
+	/*
+		*
+	*/
 }
 
+/*
+	*黑线停止
+*/
 void black2Stop(void)
 {
 	while(1){
@@ -176,13 +252,26 @@ void black2Stop(void)
 }
 
 /*
+	*单线后退右转
+*/
+void turnRightSimpleline(void)
+{
+	stepControl(900,450,450,0,0);
+	delay_ms(100);
+	stepControl(900,450,450,1,0);
+	delay_ms(1650);
+	stepControl(900,0,0,1,1);
+	
+}
+
+/*
 	*双线右转
 */
 void turnRightDoubleline(void){
 	stepControl(900,450,450,1,1);
-	delay_ms(250);
+	delay_ms(210);
 	stepControl(900,450,450,1,0);
-	delay_ms(2100);
+	delay_ms(1650);
 	stepControl(900,0,0,1,1);
 	delay_ms(300);
 }
@@ -190,7 +279,7 @@ void turnRightDoubleline(void){
 /*
 	*自我修正
 */
-void selfCorrect(void)
+void selfCorrectForward(void)
 {
 	if(trackL()==1&&trackR()==0)
 	{
@@ -207,6 +296,34 @@ void selfCorrect(void)
 	if(trackL()==0&&trackR()==1)
 	{
 		stepControl(2250,0,1125,1,1);
+		while(1)
+		{				
+			if(trackL()==1)
+			{
+				stepControl(450,0,0,1,1);
+				break;
+			}
+		}
+	}
+}
+
+void selfCorrectBack(void)
+{
+	if(trackL()==1&&trackR()==0)
+	{
+		stepControl(2250,1125,0,0,0);
+		while(1)
+		{
+			if(trackR()==1)
+			{
+				stepControl(450,0,0,0,0);
+				break;
+			}
+		}
+	}
+	if(trackL()==0&&trackR()==1)
+	{
+		stepControl(2250,0,1125,0,0);
 		while(1)
 		{				
 			if(trackL()==1)
