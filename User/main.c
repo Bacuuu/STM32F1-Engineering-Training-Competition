@@ -203,7 +203,7 @@ int main(void)
 	delay_ms(100);
 	
 	stepControl(900,450,450,1,1);
-	delay_ms(8000);
+	delay_ms(10000);
 
 	black2Stop();
 	selfCorrectForward();
@@ -212,16 +212,16 @@ int main(void)
 	delay_ms(2000);
 	
 	stepControl(900,450,450,1,1);
-	delay_ms(4000);
+	delay_ms(6000);
 	black2Stop();
-	delay_ms(1000);
+	delay_ms(1500);
 	/*
 		*此处之上代码由起始到二维码检验完成
 		*之下开始逻辑判断并抓取
 	*/
 	
 	stepControl(900,450,450,0,0);
-	delay_ms(5000);
+	delay_ms(6000);
 	black2Stop();
 	delay_ms(300);
 	selfCorrectBack();
@@ -259,7 +259,7 @@ void turnRightSimpleline(void)
 	stepControl(900,450,450,0,0);
 	delay_ms(100);
 	stepControl(900,450,450,1,0);
-	delay_ms(1650);
+	delay_ms(2100);
 	stepControl(900,0,0,1,1);
 	
 }
@@ -271,7 +271,7 @@ void turnRightDoubleline(void){
 	stepControl(900,450,450,1,1);
 	delay_ms(210);
 	stepControl(900,450,450,1,0);
-	delay_ms(1650);
+	delay_ms(2100);
 	stepControl(900,0,0,1,1);
 	delay_ms(300);
 }

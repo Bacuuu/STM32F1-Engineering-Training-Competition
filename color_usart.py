@@ -1,5 +1,6 @@
-import sensor, image, time
+import sensor, image, time, machine
 from pyb import UART
+from pyb import LED
 
 sensor.reset() # 初始化摄像头
 sensor.set_pixformat(sensor.RGB565) # 格式为 RGB565.
@@ -72,6 +73,7 @@ def whichColor(aLeft,aMiddle,aRight):
 
 
 while(1):
+    LED(2).on()
     uart = UART(3, 9600, timeout_char=1000)
     img = sensor.snapshot()         # Take a picture and return the image.
     #print('waiting for host')
@@ -104,39 +106,83 @@ while(1):
     #print(color_l,color_a,color_b)
     #print(colorRight_a)
     img.draw_rectangle(ROI_R)
+    while(True):
+        if(uart.readchar()==83):
+            LED(2).off()
+            LED(1).on()
+            time.sleep(1000)
+            print('ok')
+            img = sensor.snapshot()         # Take a picture and return the image.
+            #print('waiting for host')
+            #print(uart.readchar())
 
-    if(uart.readchar()==83):
-        time.sleep(1000)
-        print('ok')
-        img = sensor.snapshot()         # Take a picture and return the image.
-        #print('waiting for host')
-        #print(uart.readchar())
-
-        statistics=img.get_statistics(roi=ROI_L)
-        #color_l=statistics.l_mode()
-        colorLeft_a=statistics.a_mode()
-        #color_b=statistics.b_mode()
-        #print("left area:")
-        #print(color_l,color_a,color_b)
-        #print(colorLeft_a)
-        img.draw_rectangle(ROI_L)
+            statistics=img.get_statistics(roi=ROI_L)
+            #color_l=statistics.l_mode()
+            colorLeft_a=statistics.a_mode()
+            #color_b=statistics.b_mode()
+            #print("left area:")
+            #print(color_l,color_a,color_b)
+            #print(colorLeft_a)
+            img.draw_rectangle(ROI_L)
 
 
-        statistics=img.get_statistics(roi=ROI_M)
-        #color_l=statistics.l_mode()
-        colorMiddle_a=statistics.a_mode()
-        #color_b=statistics.b_mode()
-        #print("center area:")
-        #print(color_l,color_a,color_b)
-        #print(colorMiddle_a)
-        img.draw_rectangle(ROI_M)
+            statistics=img.get_statistics(roi=ROI_M)
+            #color_l=statistics.l_mode()
+            colorMiddle_a=statistics.a_mode()
+            #color_b=statistics.b_mode()
+            #print("center area:")
+            #print(color_l,color_a,color_b)
+            #print(colorMiddle_a)
+            img.draw_rectangle(ROI_M)
 
-        statistics=img.get_statistics(roi=ROI_R)
-        #color_l=statistics.l_mode()
-        colorRight_a=statistics.a_mode()
-        #color_b=statistics.b_mode()
-        #print("right area:")
-        #print(color_l,color_a,color_b)
-        #print(colorRight_a)
-        img.draw_rectangle(ROI_R)
-        uart.write(whichColor(colorLeft_a,colorMiddle_a,colorRight_a))
+            statistics=img.get_statistics(roi=ROI_R)
+            #color_l=statistics.l_mode()
+            colorRight_a=statistics.a_mode()
+            #color_b=statistics.b_mode()
+            #print("right area:")
+            #print(color_l,color_a,color_b)
+            #print(colorRight_a)
+            img.draw_rectangle(ROI_R)
+            uart.write(whichColor(colorLeft_a,colorMiddle_a,colorRight_a))
+            break
+
+    #if(uart.readchar()==84):
+    sensor.reset()
+    sensor.set_pixformat(sensor.GRAYSCALE)
+    sensor.set_framesize(sensor.VGA)
+    sensor.set_windowing((240, 240)) # look at center 240x240 pixels of the VGA resolution.
+    sensor.skip_frames(30)
+    sensor.set_auto_gain(False) # must turn this off to prevent image washout...
+    clock = time.clock()
+    while(True):
+        clock.tick()
+        img = sensor.snapshot()
+        for code in img.find_qrcodes():
+            if(code.payload()):
+                LED(1).off()
+                LED(3).on()
+                if code.payload() == '123':
+                    uart.write('A')
+                    time.sleep(1000)
+                    machine.sleep()
+                elif code.payload()=='132':
+                    uart.write('B')
+                    time.sleep(1000)
+                    machine.sleep()
+                elif code.payload()=='213':
+                    uart.write('C')
+                    time.sleep(1000)
+                    machine.sleep()
+                elif code.payload()=='231':
+                    uart.write('D')
+                    time.sleep(1000)
+                    machine.sleep()
+                elif code.payload()=='312':
+                    uart.write('E')
+                    time.sleep(1000)
+                    machine.sleep()
+                elif code.payload()=='321':
+                    uart.write('F')
+                    time.sleep(1000)
+                    machine.sleep()
+

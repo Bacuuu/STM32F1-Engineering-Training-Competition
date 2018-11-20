@@ -11,9 +11,10 @@ sensor.skip_frames(30)
 sensor.set_auto_gain(False) # must turn this off to prevent image washout...
 clock = time.clock()
 
-while(True):
-    clock.tick()
-    img = sensor.snapshot()
-    for code in img.find_qrcodes():
-        print(code)
-    print(clock.fps())
+
+clock.tick()
+img = sensor.snapshot()
+for code in img.find_qrcodes():
+    if(code.payload()):
+        print(code.payload())
+#print(clock.fps())
