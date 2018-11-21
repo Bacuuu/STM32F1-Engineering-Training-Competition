@@ -1,14 +1,28 @@
+/*
+	*库文件引入
+*/
 #include "stm32f10x.h"   
 #include "oled.h"
 #include "bsp_usart.h"
 
+/*
+	*变量宏定义
+*/
 #define 	Dir 	GPIO_Pin_6
 #define 	Step 	GPIO_Pin_7
 
+
+/*
+	*全局变量声明
+*/
 int rx_buf[1024];
 unsigned int colorList ;
 unsigned int qrcode;
-// 串口中断服务函数
+
+
+/*
+	*串口中断服务函数
+*/
 void DEBUG_USART_IRQHandler(void)
 {	
 	uint16_t num = 0;
@@ -156,6 +170,9 @@ void DEBUG_USART_IRQHandler(void)
 	}	 
 }
 
+/*
+	*函数声明
+*/
 void GPIOInit(void);
 void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR);
 void delay_ms(u16 time);
@@ -167,7 +184,12 @@ void selfCorrectBack(void);
 void turnRightDoubleline(void);	
 void black2Stop(void);
 void turnRightSimpleline(void);
+void servo(u8 angle1,u8 angle2,u8 angle3,u8 angle4,u8 angle5,u8 angle6);
+void servoSmooth(u8 val1,u8 val2,u8 val3,u8 val4,u8 val5,u8 val6,u8 val7,u8 val8,u8 val9,u8 val10,u8 val11,u8 val12,u16 time);
 
+/*
+	*入口函数
+*/
 int main(void)
 {
 	USART_Config();	
@@ -237,6 +259,136 @@ int main(void)
 		*
 	*/
 }
+
+
+/*
+	*GPIO初始化
+*/
+void GPIOInit(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	//使能TIM3\4\5外设时钟，A、B的I/O口时钟
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOE,ENABLE);
+	
+	//GPIO A0\A1 步进电机PWM 初始化
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;			//复用推挽输出
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+	
+	//GPIO A11\A12 步进电机direction 初始化
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11|GPIO_Pin_12;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOA,&GPIO_InitStructure);	
+
+	//GPIOB0\B1\B6\B7\B8\B9 舵机PWM 初始化
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9;
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
+	
+	//GPIO E7\E8\E9\E10 循迹传感 初始化
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOE,&GPIO_InitStructure);
+
+}
+
+/*
+	*平滑移动舵机
+	*参数	前六个为6个舵机角度初始值		后六个为6个舵机目的角度值		最后参数是整个动作运行时间
+*/
+void servoSmooth(u8 val1,u8 val2,u8 val3,u8 val4,u8 val5,u8 val6,u8 val7,u8 val8,u8 val9,u8 val10,u8 val11,u8 val12,u16 time)
+{
+	u8 pos1 = val7-val1;
+	u8 pos2 = val8-val2;
+	u8 pos3 = val9-val3;
+	u8 pos4 = val10-val4;
+	u8 pos5 = val11-val5;
+	u8 pos6 = val12-val6;
+	u8 pos7 = pos1>pos2?pos1:pos2;
+	u8 pos8 = pos3>pos4?pos3:pos4;
+	u8 pos9 = pos5>pos6?pos5:pos6;
+	u8 pos10 = pos7>pos8?pos7:pos8;
+	u8 maxPos = pos9>pos10?pos9:pos10;
+	u8 i = maxPos;
+	for(i=maxPos;i>0;i--)
+	{
+		servo((val7-val1)*i/maxPos+val1,(val8-val2)*i/maxPos+val2,(val9-val3)*i/maxPos+val3,(val10-val4)*i/maxPos+val4,(val11-val5)*i/maxPos+val5,(val12-val6)*i/maxPos+val6);
+		delay_ms(time/maxPos);
+	}
+	
+}
+
+
+/*
+	*6通道舵机角度控制
+	*参数为	6个舵机的角度值
+*/
+void servo(u8 angle1,u8 angle2,u8 angle3,u8 angle4,u8 angle5,u8 angle6)
+{
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+	TIM_OCInitTypeDef TIM_OCInitStructure;
+	//1000次为一个定时周期
+	TIM_TimeBaseStructure.TIM_Period = 1800;//9999
+	//设置预分频值，此处不分频
+	TIM_TimeBaseStructure.TIM_Prescaler = 800;//7200
+	//时钟分频系数
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	//计数模式
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);
+	
+	//输出模式配置
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+	//输出模式状态
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	//小于CCR_Val为高电平
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+	
+	//设置跳变值
+	TIM_OCInitStructure.TIM_Pulse = angle1+45;
+	TIM_OC3Init(TIM3,&TIM_OCInitStructure);
+	//TIM_CRR预装载使能
+	TIM_OC3PreloadConfig(TIM3,TIM_OCPreload_Enable);
+	
+	
+	//TIM3_CH2
+	TIM_OCInitStructure.TIM_Pulse = angle2+45;
+	TIM_OC4Init(TIM3,&TIM_OCInitStructure);
+	TIM_OC4PreloadConfig(TIM3,TIM_OCPreload_Enable);
+	
+	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseStructure);
+	
+	//TIM4_CH1
+	TIM_OCInitStructure.TIM_Pulse = angle3+45;
+	TIM_OC1Init(TIM4,&TIM_OCInitStructure);
+	TIM_OC1PreloadConfig(TIM3,TIM_OCPreload_Enable);
+	
+	//TIM4_CH2
+	TIM_OCInitStructure.TIM_Pulse = angle4+45;
+	TIM_OC2Init(TIM4,&TIM_OCInitStructure);
+	TIM_OC2PreloadConfig(TIM3,TIM_OCPreload_Enable);
+	
+	//TIM4_CH3
+	TIM_OCInitStructure.TIM_Pulse = angle5+45;
+	TIM_OC3Init(TIM4,&TIM_OCInitStructure);
+	TIM_OC3PreloadConfig(TIM3,TIM_OCPreload_Enable);
+	
+	//TIM4_CH4
+	TIM_OCInitStructure.TIM_Pulse = angle6+45;
+	TIM_OC4Init(TIM4,&TIM_OCInitStructure);
+	TIM_OC4PreloadConfig(TIM3,TIM_OCPreload_Enable);
+	
+	//ARR使能
+	TIM_ARRPreloadConfig(TIM3,ENABLE);
+	TIM_Cmd(TIM3,ENABLE);
+	TIM_ARRPreloadConfig(TIM4,ENABLE);
+	TIM_Cmd(TIM4,ENABLE);
+}
+
 
 /*
 	*黑线停止
@@ -335,39 +487,6 @@ void selfCorrectBack(void)
 	}
 }
 
-void GPIOInit(void)
-{
-	GPIO_InitTypeDef GPIO_InitStructure;
-	
-	//使能TIM3\4\5外设时钟，A、B的I/O口时钟
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOE,ENABLE);
-	
-	//GPIO A0\A1 步进电机PWM 初始化
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;			//复用推挽输出
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA,&GPIO_InitStructure);
-	
-	//GPIO A11\A12 步进电机direction 初始化
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11|GPIO_Pin_12;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOA,&GPIO_InitStructure);	
-
-	//GPIOB0\B1\B6\B7\B8\B9 舵机PWM 初始化
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9;
-	GPIO_Init(GPIOB,&GPIO_InitStructure);
-	
-	//GPIO E7\E8\E9\E10 循迹传感 初始化
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(GPIOE,&GPIO_InitStructure);
-
-}
-
-
 
 /*
 	*左右循迹
@@ -454,11 +573,12 @@ void stepControl(u16 period,u16 CCR_Val1,u16 CCR_Val2,u8 ForL,u8 ForR)
 	
 }
 
-/**
+/*
 	*延时函数
-**/
+	*毫秒
+	*微秒
+*/
 
-//毫秒级的延时
 void delay_ms(u16 time)
 {    
    u16 i=0;  
