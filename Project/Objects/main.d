@@ -31,3 +31,5 @@
 .\objects\main.o: ..\User\oled.h
 .\objects\main.o: ..\User\usart\bsp_usart.h
 .\objects\main.o: G:\MDK\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: G:\MDK\ARM\ARMCC\Bin\..\include\math.h
+.\objects\main.o: G:\MDK\ARM\ARMCC\Bin\..\include\stdlib.h

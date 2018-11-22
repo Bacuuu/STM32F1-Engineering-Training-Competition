@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\BH-F103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\BH-F103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Wed Nov 21 17:22:31 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Thu Nov 22 21:20:12 2018
 <BR><P>
-<H3>Maximum Stack Usage =        100 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        256 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; USART_Config &rArr; USART_Init &rArr; RCC_GetClocksFreq
+main &rArr; catchR &rArr; servoSmooth &rArr; servo &rArr; TIM_OC4Init
 <P>
 <H3>
 Mutually Recursive functions
@@ -98,7 +98,7 @@ Global Symbols
 <P><STRONG><a name="[48]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(.text)
 </UL>
-<P><STRONG><a name="[7b]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[84]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[49]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -108,15 +108,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[7c]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[85]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[7d]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[86]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[7e]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[87]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[7f]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[88]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[80]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[89]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, startup_stm32f10x_hd.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
@@ -308,7 +308,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[81]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[8a]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[4]"></a>BusFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_it.o(i.BusFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
@@ -316,7 +316,7 @@ Global Symbols
 <P><STRONG><a name="[7]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f10x_it.o(i.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(RESET)
 </UL>
-<P><STRONG><a name="[4c]"></a>GPIOInit</STRONG> (Thumb, 122 bytes, Stack size 8 bytes, main.o(i.GPIOInit))
+<P><STRONG><a name="[4c]"></a>GPIOInit</STRONG> (Thumb, 128 bytes, Stack size 8 bytes, main.o(i.GPIOInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = GPIOInit &rArr; GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
@@ -334,7 +334,7 @@ Global Symbols
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOInit
 </UL>
 
-<P><STRONG><a name="[7a]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_ReadInputDataBit))
+<P><STRONG><a name="[83]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_gpio.o(i.GPIO_ReadInputDataBit))
 <BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackL
 </UL>
@@ -390,7 +390,7 @@ Global Symbols
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Clear
 </UL>
 
-<P><STRONG><a name="[56]"></a>OLED_GPIO_Init</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, main.o(i.OLED_GPIO_Init))
+<P><STRONG><a name="[56]"></a>OLED_GPIO_Init</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, main.o(i.OLED_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = OLED_GPIO_Init &rArr; GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
@@ -478,39 +478,66 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_hd.o(.text)
 </UL>
-<P><STRONG><a name="[78]"></a>TIM_ARRPreloadConfig</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_ARRPreloadConfig))
+<P><STRONG><a name="[81]"></a>TIM_ARRPreloadConfig</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_ARRPreloadConfig))
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
 </UL>
 
-<P><STRONG><a name="[79]"></a>TIM_Cmd</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_Cmd))
+<P><STRONG><a name="[82]"></a>TIM_Cmd</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_Cmd))
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
 </UL>
 
-<P><STRONG><a name="[74]"></a>TIM_OC1Init</STRONG> (Thumb, 132 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC1Init))
+<P><STRONG><a name="[7d]"></a>TIM_OC1Init</STRONG> (Thumb, 132 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC1Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC1Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
 </UL>
 
-<P><STRONG><a name="[75]"></a>TIM_OC1PreloadConfig</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC1PreloadConfig))
+<P><STRONG><a name="[7e]"></a>TIM_OC1PreloadConfig</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC1PreloadConfig))
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
 </UL>
 
-<P><STRONG><a name="[76]"></a>TIM_OC2Init</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC2Init))
+<P><STRONG><a name="[7f]"></a>TIM_OC2Init</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC2Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC2Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
 </UL>
 
-<P><STRONG><a name="[77]"></a>TIM_OC2PreloadConfig</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC2PreloadConfig))
+<P><STRONG><a name="[80]"></a>TIM_OC2PreloadConfig</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC2PreloadConfig))
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
 </UL>
 
-<P><STRONG><a name="[73]"></a>TIM_TimeBaseInit</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_TimeBaseInit))
+<P><STRONG><a name="[79]"></a>TIM_OC3Init</STRONG> (Thumb, 150 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC3Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC3Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+</UL>
+
+<P><STRONG><a name="[7a]"></a>TIM_OC3PreloadConfig</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC3PreloadConfig))
+<BR><BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+</UL>
+
+<P><STRONG><a name="[7b]"></a>TIM_OC4Init</STRONG> (Thumb, 114 bytes, Stack size 16 bytes, stm32f10x_tim.o(i.TIM_OC4Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC4Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+</UL>
+
+<P><STRONG><a name="[7c]"></a>TIM_OC4PreloadConfig</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_OC4PreloadConfig))
+<BR><BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+</UL>
+
+<P><STRONG><a name="[78]"></a>TIM_TimeBaseInit</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_TimeBaseInit))
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
 </UL>
 
-<P><STRONG><a name="[2f]"></a>USART1_IRQHandler</STRONG> (Thumb, 888 bytes, Stack size 8 bytes, main.o(i.USART1_IRQHandler))
+<P><STRONG><a name="[2f]"></a>USART1_IRQHandler</STRONG> (Thumb, 934 bytes, Stack size 8 bytes, main.o(i.USART1_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = USART1_IRQHandler &rArr; OLED_ShowChinese &rArr; OLED_Coord &rArr; SPI_Write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese
@@ -591,11 +618,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[82]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[8b]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[83]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[8c]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[84]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[8d]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[6a]"></a>black2Stop</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, main.o(i.black2Stop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = black2Stop &rArr; stepControl &rArr; TIM_OC2Init
@@ -607,27 +634,65 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[6e]"></a>delay_ms</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, main.o(i.delay_ms))
-<BR><BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightSimpleline
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
+<P><STRONG><a name="[6e]"></a>catchL</STRONG> (Thumb, 386 bytes, Stack size 40 bytes, main.o(i.catchL))
+<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = catchL &rArr; servoSmooth &rArr; servo &rArr; TIM_OC4Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servoSmooth
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+</UL>
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[72]"></a>catchM</STRONG> (Thumb, 344 bytes, Stack size 40 bytes, main.o(i.catchM))
+<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = catchM &rArr; servoSmooth &rArr; servo &rArr; TIM_OC4Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servoSmooth
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+</UL>
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[73]"></a>catchR</STRONG> (Thumb, 388 bytes, Stack size 40 bytes, main.o(i.catchR))
+<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = catchR &rArr; servoSmooth &rArr; servo &rArr; TIM_OC4Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servoSmooth
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+</UL>
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[71]"></a>delay_ms</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, main.o(i.delay_ms))
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightSimpleline
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
+<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servoSmooth
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchR
+<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchM
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchL
 </UL>
 
 <P><STRONG><a name="[59]"></a>delayms</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, main.o(i.delayms))
 <BR><BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 396 bytes, Stack size 8 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = main &rArr; USART_Config &rArr; USART_Init &rArr; RCC_GetClocksFreq
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 1352 bytes, Stack size 16 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = main &rArr; catchR &rArr; servoSmooth &rArr; servo &rArr; TIM_OC4Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_SendString
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
-<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightSimpleline
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightSimpleline
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
-<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
-<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
-<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchR
+<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchM
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchL
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
 <LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar
@@ -636,7 +701,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[71]"></a>selfCorrectBack</STRONG> (Thumb, 134 bytes, Stack size 8 bytes, main.o(i.selfCorrectBack))
+<P><STRONG><a name="[76]"></a>selfCorrectBack</STRONG> (Thumb, 134 bytes, Stack size 8 bytes, main.o(i.selfCorrectBack))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = selfCorrectBack &rArr; stepControl &rArr; TIM_OC2Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
@@ -646,7 +711,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[6f]"></a>selfCorrectForward</STRONG> (Thumb, 130 bytes, Stack size 8 bytes, main.o(i.selfCorrectForward))
+<P><STRONG><a name="[74]"></a>selfCorrectForward</STRONG> (Thumb, 130 bytes, Stack size 8 bytes, main.o(i.selfCorrectForward))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = selfCorrectForward &rArr; stepControl &rArr; TIM_OC2Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trackR
@@ -656,23 +721,56 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
+<P><STRONG><a name="[6f]"></a>servo</STRONG> (Thumb, 260 bytes, Stack size 56 bytes, main.o(i.servo))
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = servo &rArr; TIM_OC4Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TimeBaseInit
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC4PreloadConfig
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC4Init
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC3PreloadConfig
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC3Init
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2PreloadConfig
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2Init
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1PreloadConfig
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1Init
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ARRPreloadConfig
+</UL>
+<BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servoSmooth
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchR
+<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchM
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchL
+</UL>
+
+<P><STRONG><a name="[70]"></a>servoSmooth</STRONG> (Thumb, 318 bytes, Stack size 128 bytes, main.o(i.servoSmooth))
+<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = servoSmooth &rArr; servo &rArr; TIM_OC4Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;servo
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+</UL>
+<BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchR
+<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchM
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;catchL
+</UL>
+
 <P><STRONG><a name="[6d]"></a>stepControl</STRONG> (Thumb, 180 bytes, Stack size 56 bytes, main.o(i.stepControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = stepControl &rArr; TIM_OC2Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TimeBaseInit
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2PreloadConfig
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2Init
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1PreloadConfig
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1Init
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ARRPreloadConfig
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TimeBaseInit
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2PreloadConfig
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2Init
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1PreloadConfig
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1Init
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ARRPreloadConfig
 </UL>
-<BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightSimpleline
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
-<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
-<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightSimpleline
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRightDoubleline
+<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
 </UL>
@@ -680,37 +778,37 @@ Global Symbols
 <P><STRONG><a name="[6b]"></a>trackL</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, main.o(i.trackL))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = trackL
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
-<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
+<BR>[Called By]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
 </UL>
 
 <P><STRONG><a name="[6c]"></a>trackR</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, main.o(i.trackR))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = trackR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
-<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
+<BR>[Called By]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectForward
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;selfCorrectBack
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;black2Stop
 </UL>
 
-<P><STRONG><a name="[70]"></a>turnRightDoubleline</STRONG> (Thumb, 80 bytes, Stack size 8 bytes, main.o(i.turnRightDoubleline))
+<P><STRONG><a name="[75]"></a>turnRightDoubleline</STRONG> (Thumb, 80 bytes, Stack size 8 bytes, main.o(i.turnRightDoubleline))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = turnRightDoubleline &rArr; stepControl &rArr; TIM_OC2Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
-<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[72]"></a>turnRightSimpleline</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, main.o(i.turnRightSimpleline))
+<P><STRONG><a name="[77]"></a>turnRightSimpleline</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, main.o(i.turnRightSimpleline))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = turnRightSimpleline &rArr; stepControl &rArr; TIM_OC2Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stepControl
-<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>

@@ -119,11 +119,11 @@ void OLED_GPIO_Init(void)
     GPIO_InitTypeDef GPIO_InitStruct;    
     //开启GPIOD的时钟
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);  //光电传感器
+	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);  //光电传感器
 	
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8;
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
-	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	//GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8;
+	//GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING; 
+	//GPIO_Init(GPIOE, &GPIO_InitStruct);
 	
     //设置GPIO的基本参数
     GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
