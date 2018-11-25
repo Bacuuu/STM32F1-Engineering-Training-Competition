@@ -1,27 +1,32 @@
+
+
+
 /*
 	*库文件引入
 */
 #include "stm32f10x.h"   
 #include "oled.h"
 #include "bsp_usart.h"
-#include<math.h>
-#include <stdlib.h>
 
 /*
 	*变量宏定义
 */
+
 #define 	Dir 	GPIO_Pin_6
 #define 	Step 	GPIO_Pin_7
 
 /*
 	*全局变量声明
 */
+
 int rx_buf[1024];
 unsigned int colorList ;
-unsigned int qrcode;
+unsigned int qrcode = 123;
+
 /*
 	*串口中断服务函数
 */
+
 void DEBUG_USART_IRQHandler(void)
 {	
 	uint16_t num = 0;
@@ -189,7 +194,15 @@ void servoSmooth(u8 val1,u8 val2,u8 val3,u8 val4,u8 val5,u8 val6,u8 val7,u8 val8
 void catchM(void);
 void catchL(void);
 void catchR(void);
-	
+void placeL(void);
+void placeR(void);
+void placeM(void);
+void firstCatch(u16 x,u16 y);		//qrcode	colorList  
+void secondCatch(u16 x,u16 y);
+void thirdCatch(u16 x,u16 y);
+void firstPlace(u8 x);
+void secondPlace(u8 x);
+void thirdPlace(u8 x);
 //calculateAngle(180,89,servoangles+1)
 /*
 	*入口函数
@@ -209,8 +222,13 @@ int main(void)
 	OLED_ShowChinese(18,4,wei);
 	OLED_ShowChinese(36,4,ma);
 	OLED_ShowChar(54,4,ASCII_Colon);
+	
+	
+	OLED_ShowChar(0,6,_1);
+	OLED_ShowChar(18,6,_2);
+	OLED_ShowChar(36,6,_3);			
 
-	servo(112,112,166,172,0,74);
+	servo(90,112,166,150,0,68);
 	stepControl(900,0,0,1,1);
 	
 	stepControl(900,450,450,1,1);
@@ -251,7 +269,12 @@ int main(void)
 	delay_ms(2000);
 	
 	stepControl(900,450,450,1,1);
-	delay_ms(5000);
+	delay_ms(1000);
+	black2Stop();
+	selfCorrectForward();
+	
+	stepControl(900,450,450,1,1);
+	delay_ms(1000);
 	black2Stop();
 	delay_ms(1500);
 	/*
@@ -262,24 +285,21 @@ int main(void)
 	stepControl(900,450,450,0,0);
 	delay_ms(5000);
 	black2Stop();
-	delay_ms(300);
 	selfCorrectBack();
-	delay_ms(100);
 	turnRightSimpleline();
 	
 	stepControl(900,450,450,1,1);
 	delay_ms(1000);
 	black2Stop();
 	selfCorrectForward();
-	
 	stepControl(900,450,450,0,0);
 	delay_ms(1300);
 	stepControl(900,0,0,0,0);
-	catchM();
 	
 	/*
 		抓取第一个
 	*/
+	firstCatch(qrcode,colorList);
 	
 	delay_ms(1000);
 	
@@ -295,6 +315,8 @@ int main(void)
 	/*
 		*放第一个
 	*/
+	firstPlace(qrcode);
+	
 	
 	delay_ms(1000);
 	
@@ -311,10 +333,10 @@ int main(void)
 	stepControl(900,450,450,0,0);
 	delay_ms(1300);
 	stepControl(900,0,0,0,0);
-	catchL();
 	/*
 		抓取第二个
 	*/
+	secondCatch(qrcode,colorList);
 	
 	delay_ms(1000);
 	
@@ -330,6 +352,7 @@ int main(void)
 	/*
 		*放第二个
 	*/
+	secondPlace(qrcode);
 	
 	delay_ms(1000);
 	
@@ -342,14 +365,13 @@ int main(void)
 	delay_ms(1000);
 	black2Stop();
 	selfCorrectForward();
-	
-		stepControl(900,450,450,0,0);
+	stepControl(900,450,450,0,0);
 	delay_ms(1300);
 	stepControl(900,0,0,0,0);
-	catchR();
 	/*
 		抓取第三个
 	*/
+	thirdCatch(qrcode,colorList);
 	
 	delay_ms(1000);
 	
@@ -365,7 +387,7 @@ int main(void)
 	/*
 		*放第三个
 	*/
-	
+	thirdPlace(qrcode);
 	delay_ms(1000);
 	
 	
@@ -373,12 +395,11 @@ int main(void)
 	delay_ms(1000);
 	black2Stop();
 	selfCorrectForward();
-	
 	turnRightDoubleline();
 	
 	//一线停止检测
 	stepControl(900,450,450,1,1);
-	delay_ms(1000);
+	delay_ms(1500);
 	black2Stop();
 	selfCorrectForward();
 	//二线停止检测
@@ -395,14 +416,14 @@ int main(void)
 	
 	//单线左转
 	stepControl(900,450,450,1,1);
-	delay_ms(1600);
+	delay_ms(1450);
 	stepControl(900,450,450,0,1);
 	delay_ms(1650);
 	stepControl(900,0,0,1,1);
 	delay_ms(100);
 	
 	stepControl(900,450,450,1,1);
-	delay_ms(800);
+	delay_ms(1000);
 	black2Stop();
 	selfCorrectForward();
 	
@@ -545,34 +566,247 @@ void servo(u8 angle1,u8 angle2,u8 angle3,u8 angle4,u8 angle5,u8 angle6)
 	*抓取逻辑判断
 */
 
-/*
-void logic(unsigned int color,unsigned int code)
+
+void firstCatch(u16 x,u16 y)		//qrcode	colorList  
 {
-	u8 colorH = color/100;
-	u8 colorM = color/10%10;
-	u8 colorL = color%100;
-	u8 codeH = code/100;
-	u8 codeM = code/10%10;
-	u8 codeL = code%100;
-	
-	
-		*第一个抓取物品
-	
-	
-	if(codeH==1)
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	u8 colorH = y/100;
+	u8 colorM = y/10%10;
+	u8 colorL = y%10;
+	if(codeH==1)		//先抓红
 	{
-		//if()
+		if(colorH==1)
+			catchL();
+		else if(colorM==1)
+		{
+			catchM();
+		}
+		else if(colorL==1)
+			catchR();
 	}
-	else if(codeM ==1)
+	else if(codeH==2)	//先抓绿
 	{
-		
+		if(colorH==2)
+			catchL();
+		else if(colorM==2)
+			catchM();
+		else if(colorL==2)
+			catchR();
 	}
-	else if(codeL ==1)
+	else if(codeH==3)	//先抓蓝
 	{
-		
+		if(colorH==3)
+			catchL();
+		else if(colorM==3)
+			catchM();
+		else if(colorL==3)
+			catchR();
 	}
 }
- */
+
+void secondCatch(u16 x,u16 y)	//qrcode colorList
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	u8 colorH = y/100;
+	u8 colorM = y/10%10;
+	u8 colorL = y%10;
+	if(codeM==1)		//抓红
+	{
+		if(colorH==1)
+			catchL();
+		else if(colorM==1)
+		{
+			catchM();
+		}
+		else if(colorL==1)
+			catchR();
+	}
+	else if(codeM==2)	//抓绿
+	{
+		if(colorH==2)
+			catchL();
+		else if(colorM==2)
+			catchM();
+		else if(colorL==2)
+			catchR();
+	}
+	else if(codeM==3)	//抓蓝
+	{
+		if(colorH==3)
+			catchL();
+		else if(colorM==3)
+			catchM();
+		else if(colorL==3)
+			catchR();
+	}
+}
+ 
+void thirdCatch(u16 x,u16 y)	//qrcode colorList
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	u8 colorH = y/100;
+	u8 colorM = y/10%10;
+	u8 colorL = y%10;
+	if(codeL==1)		//抓红
+	{
+		if(colorH==1)
+			catchL();
+		else if(colorM==1)
+		{
+			catchM();
+		}
+		else if(colorL==1)
+			catchR();
+	}
+	else if(codeL==2)	//抓绿
+	{
+		if(colorH==2)
+			catchL();
+		else if(colorM==2)
+			catchM();
+		else if(colorL==2)
+			catchR();
+	}
+	else if(codeL==3)	//抓蓝
+	{
+		if(colorH==3)
+			catchL();
+		else if(colorM==3)
+			catchM();
+		else if(colorL==3)
+			catchR();
+	}
+}
+
+void firstPlace(u8 x)				//qrcode
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	if(codeH==1)		//先抓红
+	{
+		placeR();
+	}
+	else if(codeH==2)	//先抓绿
+	{
+		placeM();
+	}
+	else if(codeH==3)	//先抓蓝
+	{
+		placeL();
+	}
+}
+/*
+hong lv lan 
+void firstPlace(u8 x)				//qrcode
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	if(codeH==1)		//先抓红
+	{
+		placeL();
+	}
+	else if(codeH==2)	//先抓绿
+	{
+		placeM();
+	}
+	else if(codeH==3)	//先抓蓝
+	{
+		placeR();
+	}
+}
+*/
+
+
+void secondPlace(u8 x)
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	if(codeM==1)		//先抓红
+	{
+		placeR();
+	}
+	else if(codeM==2)	//先抓绿
+	{
+		placeM();
+	}
+	else if(codeM==3)	//先抓蓝
+	{
+		placeL();
+	}
+}
+
+
+/*
+//hong lv lan
+void secondPlace(u8 x)
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	if(codeM==1)		//先抓红
+	{
+		placeL();
+	}
+	else if(codeM==2)	//先抓绿
+	{
+		placeM();
+	}
+	else if(codeM==3)	//先抓蓝
+	{
+		placeR();
+	}
+}
+*/
+
+void thirdPlace(u8 x)
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	if(codeL==1)		//先抓红
+	{
+		placeR();
+	}
+	else if(codeL==2)	//先抓绿
+	{
+		placeM();
+	}
+	else if(codeL==3)	//先抓蓝
+	{
+		placeL();
+	}
+}
+
+/*
+//hong lv lan
+void thirdPlace(u8 x)
+{
+	u8 codeH = x/100;
+	u8 codeM = x/10%10;
+	u8 codeL = x%10;
+	if(codeL==1)		//先抓红
+	{
+		placeL();
+	}
+	else if(codeL==2)	//先抓绿
+	{
+		placeM();
+	}
+	else if(codeL==3)	//先抓蓝
+	{
+		placeR();
+	}
+}
+*/
 
 /*
 	*黑线停止
@@ -595,9 +829,8 @@ void turnRightSimpleline(void)
 	stepControl(900,450,450,0,0);
 	delay_ms(100);
 	stepControl(900,450,450,1,0);
-	delay_ms(1650);
+	delay_ms(1600);
 	stepControl(900,0,0,1,1);
-	
 }
 
 /*
@@ -785,48 +1018,90 @@ void delay_us(u16 time)
 
 
 
-
 void catchM(void)
 {
-	servo(112,112,166,172,0,74);
-	servoSmooth(112,112,166,172,0,74,112,112,56,86,0,74,3000);
-	servoSmooth(112,112,56,86,0,74,115,112,17,108,180,98,3000);
-	servoSmooth(115,112,17,108,180,98,115,112,11,106,180,98,2000);
-	servoSmooth(115,112,11,106,180,98,115,126,33,88,180,98,2000);
-	servoSmooth(115,126,33,88,180,98,115,126,33,88,180,9,3000);
-	servo(115,126,33,88,180,0);
+	stepControl(900,450,450,0,0);
+	delay_ms(200);
+	stepControl(900,0,0,0,0);
+	servo(90,112,166,50,0,68);
+	servoSmooth(90,112,166,150,0,68,	90,112,56,86,0,68,2000);
+	servoSmooth(90,112,56,86,0,68,		93,122,17,108,180,68,2000);
+	servoSmooth(93,112,17,108,180,68,	93,112,11,106,180,68,2000);
+	servoSmooth(93,112,11,106,180,68,	93,126,33,88,180,68,2000);
+	servoSmooth(93,126,33,88,180,68,	93,126,33,88,180,9,2000);
+	servo(93,126,33,88,180,0);
 	delay_ms(500);
-	servoSmooth(115,126,33,88,180,9,115,3,33,30,0,9,3000);
+	servoSmooth(93,126,33,88,180,9,93,3,33,30,0,9,3000);
 }
 
 void catchL(void)
 {
-	servo(116,46,0,130,90,90);
-	servoSmooth(116,46,0,130,90,90,     143,116,0,130,90,90,3000);
-	servoSmooth(143,116,0,130,90,90,    143,139,14,140,180,90,3000);
-	servoSmooth(143,139,14,140,180,90,  137,137,46,94,180,90,3000);
-	servoSmooth(137,137,46,94,180,90,   132,152,72,90,180,90,3000);
-	servoSmooth(132,152,72,90,180,90,   137,143,54,90,180,3,3000);
-	servo(137,143,54,90,180,3);
+	servo(94,46,0,130,90,90);
+	servoSmooth(94,46,0,130,90,90,     121,116,0,130,90,90,2000);
+	servoSmooth(121,116,0,130,90,90,    121,139,14,140,180,90,2000);
+	servoSmooth(121,139,14,140,180,90,  115,137,46,94,180,90,2000);
+	servoSmooth(115,137,46,94,180,90,   115,152,72,90,180,90,2000);
+	servoSmooth(115,152,72,90,180,90,   115,143,54,90,180,3,2000);
+	servo(115,143,54,90,180,3);
 	delay_ms(400);
-	servoSmooth(137,143,54,90,180,3,    137,37,0,90,180,3,3000);
-	servoSmooth(137,37,0,90,180,3,      114,37,0,127,180,3,3000);
+	servoSmooth(115,143,54,90,180,3,    115,37,0,90,180,3,2000);
+	servoSmooth(115,37,0,90,180,3,      92,37,0,127,180,3,2000);
 	
 }
 
 void catchR(void)
 {
-	servo(116,46,0,130,90,90);
-	servoSmooth(116,46,0,130,90,90,     88,116,0,130,90,90,3000);
-	servoSmooth(88,116,0,130,90,90,    88,139,14,140,180,90,3000);
-	servoSmooth(88,139,14,140,180,90,  88,137,46,94,180,90,3000);
-	servoSmooth(88,137,46,94,180,90,   88,143,54,90,180,90,3000);
-	servoSmooth(88,143,54,90,180,90,   88,143,54,90,180,3,3000);
-	servo(88,143,54,90,180,3);
+	servo(94,46,0,130,90,90);
+	servoSmooth(94,46,0,130,90,90,     66,116,0,130,90,90,2000);
+	servoSmooth(66,116,0,130,90,90,    66,139,14,140,180,90,2000);
+	servoSmooth(66,139,14,140,180,90,  66,137,46,94,180,90,2000);
+	servoSmooth(66,137,46,94,180,90,   66,143,54,90,180,90,2000);
+	servoSmooth(66,143,54,90,180,90,   66,143,54,90,180,3,2000);
+	servo(66,143,54,90,180,3);
 	delay_ms(400);
-	servoSmooth(88,143,54,90,180,3,    88,37,0,90,180,3,3000);
-	servoSmooth(88,37,0,90,180,3,      110,37,0,127,180,3,3000);
+	servoSmooth(66,143,54,90,180,3,    66,37,0,90,180,3,3000);
+	//servoSmooth(60,37,0,90,180,3,      88,37,0,127,180,3,3000);
 	
+}
+
+void placeL(void)
+{
+	servo(114,37,0,127,180,1);
+	servoSmooth(114,37,0,127,180,1,		151,27,59,127,180,1,3000);
+	servo(151,27,59,127,180,1);
+	delay_ms(400);
+	servoSmooth(151,27,59,127,180,1,		155,3,128,51,0,1,3000);
+	servoSmooth(155,3,128,51,0,1,		155,3,178,0,0,1,3000);
+	servoSmooth(155,3,178,0,0,1,		155,3,178,0,0,100,3000);
+	servoSmooth(155,3,178,0,0,100,		155,3,158,0,0,100,3000);
+	servoSmooth(155,3,158,0,0,100,		155,3,8,0,0,100,3000);
+}
+
+void placeR(void)
+{
+	servo(27,37,0,127,180,1);
+	servoSmooth(27,37,0,127,180,1,		27,27,59,127,180,1,3000);
+	servo(27,27,59,127,180,1);
+	delay_ms(400);
+	servoSmooth(27,27,59,127,180,1,		27,3,128,51,0,1,3000);
+	servoSmooth(27,3,128,51,0,1,		23,3,178,0,0,1,3000);
+	servoSmooth(23,3,178,0,0,1,		23,3,178,0,0,100,3000);
+	servoSmooth(23,3,178,0,0,100,		27,3,158,0,0,100,3000);
+	servoSmooth(27,3,158,0,0,100,		27,3,8,0,0,100,3000);
+}
+
+void placeM(void)
+{
+	stepControl(900,450,450,1,1);
+	delay_ms(1800);
+	stepControl(900,0,0,1,1);
+	servo(82,90,90,90,7,0);
+	servoSmooth(82,90,90,90,7,0,	82,84,157,70,13,0,2000);
+	servoSmooth(82,84,157,70,13,0,	82,27,147,46,13,0,2000);
+	servoSmooth(82,27,147,46,13,0,	86,7,180,0,9,0,2000);
+	servoSmooth(86,7,180,0,9,0,		86,7,180,0,9,57,2000);
+	servoSmooth(86,7,180,0,9,57,	92,7,14,0,9,55,2000);
+	servo(92,7,14,0,9,55);
 }
 /*
 
@@ -874,3 +1149,4 @@ void delay_us(u32 i)
     SysTick->VAL=0;        //清空计数器
 }
 */
+
